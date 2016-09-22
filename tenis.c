@@ -163,9 +163,9 @@ void drawGame(void)
     //Translate ball trough map
     if ((ball.y <= playerOne.upperY && ball.y >= playerOne.lowerY) && (ball.x >= playerOne.lowerEdgeX && ball.x <= playerOne.lowerEdgeX + playerOne.width))
     {
-        ball.speed =0.01;
+        ball.speed =0.1;
     } else if (ball.y <= playerIA.upperY && ball.y >= playerIA.lowerY){
-        ball.speed= -0.01;
+        ball.speed= -0.1;
     }
     
     ball.y += ball.speed;
@@ -219,6 +219,49 @@ void keyboardArrows(int key, int x, int y){
     }
 
 } 
+
+
+void keyboardLetter(unsigned char key, int x, int y){ 
+    float distance;
+
+    if(key == 'w' || key == 's' ){
+
+        if(key == 'w') {
+            if( playerIA.upperY + 1 < 13){
+                distance =  1;
+            }
+        }
+        if(key == 's') {
+            if( playerIA.lowerY - 1 > 0){
+                distance = -1;
+            }
+        }
+        playerIA.lowerY += distance;
+        playerIA.lowerEdgeY += distance;
+        playerIA.upperEdgeY += distance;
+        playerIA.upperY += distance; 
+
+    }    
+
+    if(key == 'a' || key == 'd' ){ 
+        if(key == 'a'){
+            if(playerIA.lowerEdgeX -1 > -7){
+                distance = -0.5;
+            }
+        }
+        if(key == 'd'){
+            if(playerIA.lowerEdgeX + playerIA.width + 1 < 7){
+                distance = 0.5;
+            }
+        }
+
+        playerIA.lowerX += distance;
+        playerIA.lowerEdgeX += distance;
+        playerIA.upperEdgeX += distance;
+        playerIA.upperX += distance;
+    }
+
+}
 
 // Inicializa parâmetros de rendering
 void Inicializa (void)
@@ -276,6 +319,7 @@ int main(int argc, char** argv)
     glutDisplayFunc(drawGame);
     glutIdleFunc(drawGame);
     glutSpecialFunc(keyboardArrows);
+    glutKeyboardFunc(keyboardLetter);
     Inicializa();
     glutMainLoop();
 }
