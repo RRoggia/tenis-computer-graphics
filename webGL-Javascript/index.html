@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>G2 CG App</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="js/three.js"></script>
+		<script src="js/BolaDeTenis.js"></script>
+		<script src="js/teclado.js"></script>
+		<script src="js/Tenista.js"></script>
+		<script>
+			
+			var scene = new THREE.Scene();
+
+			var campoDeVisao = 75;
+			var proporcao = window.innerWidth / window.innerHeight;
+			var planoDeRecorteDaFrente = 0.1;
+			var planoDeRecorteDeTras = 1000;
+
+			var camera = new THREE.PerspectiveCamera( campoDeVisao, proporcao , planoDeRecorteDaFrente, planoDeRecorteDeTras );
+			camera.position.z = 5;
+
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			
+			//Uma tag HTML <canvas> é usada para desenhar elementos graficos em uma pagina web.
+			document.body.appendChild( renderer.domElement );
+			
+			var bolaDeTenis = criaBolaDeTenis();
+			scene.add( bolaDeTenis );
+
+			//adiciona primeiro tenista
+			scene.add( criaCabeca(7) );
+			scene.add( criaTronco(7, -1.2) );
+			var bracoEsquerdo = criaBraco(6.5, -1, 0.55);
+			scene.add( bracoEsquerdo );
+			var bracoDireito = criaBraco(6.5, -1, -0.55);
+			scene.add( bracoDireito );
+
+			var pernaEsquerda = criaPerna(7,-2.4, 0.3);
+			scene.add(pernaEsquerda);
+
+			var pernaDireita = criaPerna(7,-2.4, -0.3);
+			scene.add(pernaDireita);
+
+			//adiciona segundo tenista
+			scene.add( criaCabeca(-7) );
+			scene.add( criaTronco(-7, -1.2) );
+			var bracoEsquerdo = criaBraco(-6.5, -1, 0.55);
+			scene.add( bracoEsquerdo );
+			var bracoDireito = criaBraco(-6.5, -1, -0.55);
+			scene.add( bracoDireito );
+
+			var pernaEsquerda = criaPerna(-7,-2.4, 0.3);
+			scene.add(pernaEsquerda);
+
+			var pernaDireita = criaPerna(-7,-2.4, -0.3);
+			scene.add(pernaDireita);
+
+			document.addEventListener("keydown", movimentarCamera, false); 
+			
+			var direction = 0.1;
+
+			function render() {
+				requestAnimationFrame( render );
+				movimentaBolaDeTenis();
+				renderer.render( scene, camera );
+			}
+			
+			render();
+
+		</script>
+	</body>
+</html>
